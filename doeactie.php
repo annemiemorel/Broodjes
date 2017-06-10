@@ -43,7 +43,7 @@ if (isset($_GET["action"]) && $_GET["action"] == "verzendbestelling"){
     $_SESSION["email"]=$_POST["email"];
     $_SESSION["paswoord"]=$_POST["paswoord"];
     $gDAO= new GebruikerDAO();
-    $gDAO->plaatsbestelling($_SESSION['bestelling'],$_SESSION["email"],$_SESSION["paswoord"],$_SESSION["totaalprijs"]);
+    $gDAO->plaatsbestelling($_SESSION["email"],$_SESSION["paswoord"]);
     header("location: Presentation/bestelForm.php?boodschap=verzonden");
     exit(0);
 }
