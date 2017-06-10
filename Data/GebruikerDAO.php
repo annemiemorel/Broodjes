@@ -112,18 +112,23 @@ class GebruikerDAO {
 
     }  
     
-    public function plaatsbestelling($bestelling,$email,$paswoord, $prijs){
+    public function plaatsbestelling($email,$paswoord){
         if($this->checklogin($email,$paswoord)){
             $bestaandeGebruiker=$this->getByEmail($email);
-            echo $bestaandeGebruiker;
+            //echo $bestaandeGebruiker;
+            for($x=0;$x<$_SESSION["aantalbroodjes"];$x++){
+                
+                $bestelling= $_SESSION["bestellingcursist"][$x][0];
+                $prijs= $_SESSION["bestellingcursist"][$x][1];
+       
              $sql = "insert into bestellingen (datum,cursist,bestelling,prijs) values (:datum, :cursist, :bestelling, :prijs)";
-            echo $sql;
+            //echo $sql;
             $dbh = new PDO(DBConfig::$DB_CONNSTRING, DBConfig::$DB_USERNAME, DBConfig::$DB_PASSWORD);
             $stmt = $dbh->prepare($sql); 
             $datum = date("Y-m-d");
 
             $stmt->execute(array(':datum' => $datum, ':cursist' => $bestaandeGebruiker, ':bestelling' => $bestelling, ':prijs' => $prijs));
-        }
+        }}
         return;
     }  
 }

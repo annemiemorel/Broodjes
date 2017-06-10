@@ -3,6 +3,7 @@ namespace Data;
 require_once("Data/GebruikerDAO.php");
 require_once 'Exceptions/GebruikerBestaatException.php';
 require_once 'Exceptions/FoutPaswoordException.php';
+require_once 'phpmailer/class.phpmailer.php';
 use Exceptions\GebruikerBestaatException;
 use Exceptions\FoutPaswoordException;
 function smtpmailer($to, $from, $from_name, $subject, $body) { 
@@ -23,8 +24,7 @@ function smtpmailer($to, $from, $from_name, $subject, $body) {
 	if(!$mail->Send()) {
 		$error = 'Mail error: '.$mail->ErrorInfo; 
 		return false;
-	} else {
-		$error = 'Message sent!';
+	} else {$error = 'Message sent!';
 		return true;
 	}
 }

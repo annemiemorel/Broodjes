@@ -39,7 +39,7 @@
         <br>
         <input type="checkbox" name="mayonaise" value="6" /> mayonaise
         <br><br>
-        <input type="submit" style="font-size:1em" value="Bestelling berekenen" class="kaderknop">
+        <input type="submit" style="font-size:1em" value="Broodje toevoegen" class="kaderknop">
      </form>
         <br><br>
  
@@ -49,14 +49,14 @@
         
         <?php
     if (isset($_GET["boodschap"]) && $_GET["boodschap"] == "prijs"){
-        echo "Broodje : ".$_SESSION['bestelling']; ?><br> <?php
-        echo $_SESSION['boodschap']; ?><br> <?php
-        echo "aantal broodjes = ". $_SESSION['aantalbroodjes'];
+        //echo "Broodje : ".$_SESSION['bestelling']; ?><br> <?php
+        //echo $_SESSION['boodschap']; ?><br> <?php
+        //echo "aantal broodjes = " . ($_SESSION['aantalbroodjes']+1); ?><br> <?php
         //echo 'bestelling='.$_SESSION["bestellingcursist"][0][1];
         
        for($x=0;$x<$_SESSION["aantalbroodjes"];$x++){
-            
-                echo $_SESSION["bestellingcursist"][$x][0];
+                echo "Broodje ".($x+1)." : ";
+                echo $_SESSION["bestellingcursist"][$x][0]." - ";
                 echo $_SESSION["bestellingcursist"][$x][1];
                 ?><br> <?php
                 
@@ -67,10 +67,17 @@
     }
     if (isset($_GET["boodschap"]) && $_GET["boodschap"] == "verzonden"){
         echo "Je bestelling werd verzonden";
+        session_unset();
         $_SESSION['aantalbroodjes']=0;
-    }?>
-        <br><br><br>
-        <a href="bestelForm.php" class="kaderknop">Broodje toevoegen</a> 
+    }
+    if (isset($_GET["boodschap"]) && $_GET["boodschap"] == "opnieuw"){
+        echo "Begin opnieuw met bestellen";
+        session_unset();
+        $_SESSION['aantalbroodjes']=0;
+        
+    }?>            
+                <br><br><br>
+     <a href="bestelForm.php?boodschap=opnieuw" class="kaderknop">Opnieuw beginnen </a>   
         <br><br>
      <a href="loginForm.php" class="knop but1">Bestelling plaatsen </a>    
     </aside>

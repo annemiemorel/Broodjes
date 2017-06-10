@@ -15,7 +15,7 @@ if (isset($_GET["action"]) && $_GET["action"] == "process") {
         $gSvc = new GebruikerService();
         $soortbroodje=array("klein grof","groot grof","klein wit","groot wit","ciabatta");
         $_SESSION['bestelbeleg']='';
-        $_SESSION['bestellingcursist']=array();
+        //$_SESSION['bestellingcursist']=array();
         if(!isset($_POST['hesp'])){$_POST['hesp']='';}else{$_SESSION['bestelbeleg'].="hesp, ";}
         if(!isset($_POST['kaas'])){$_POST['kaas']='';}else{$_SESSION['bestelbeleg'].="kaas, ";}
         if(!isset($_POST['tomaat'])){$_POST['tomaat']='';}else{$_SESSION['bestelbeleg'].="tomaat, ";}
