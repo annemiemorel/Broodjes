@@ -17,13 +17,19 @@
  <?php
 if (isset($_GET["error"]) && $_GET["error"] == "foutpaswoord") {
  ?>
- <p style="color: red">Combinatie e-mail en paswoord is fout!</p>
+ <p style="color: red">Paswoord is fout!</p>
  <?php
 }
-?> <?php
+
 if (isset($_GET["error"]) && $_GET["error"] == "foutenaam") {
  ?>
  <p style="color: red">Naam is fout!</p>
+ <?php
+}
+
+ if (isset($_GET["error"]) && $_GET["error"] == "emailbestaatniet") {
+ ?>
+ <p style="color: red">Email is fout!</p>
  <?php
 }
 ?> 

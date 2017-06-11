@@ -1,24 +1,24 @@
 <?php
 namespace Entities;
-use Entities\BroodType;
+use Entities\Cursist;
 
-class BroodType {
+class Cursist {
 
  private static $idMap = array();  //bevat alle reeds aangemaakte objecten van klasse Voornaam; static: slechts 1 lijst voor alle Voornaam-objecten   
  private $id;
- private $type;
- private $prijs;
+ private $email;
+ private $paswoord;
 
- private function __construct($id, $type, $prijs) {
+ private function __construct($id, $email, $paswoord) {
  $this->id = $id;
- $this->type = $type;
- $this->prijs = $prijs;
+ $this->email = $email;
+ $this->paswoord = $paswoord;
  
 }
 
- public static function create($id, $type, $prijs){
+ public static function create($id, $email, $paswoord){
      if (!isset(self::$idMap[$id])) {  //geindexeerd met id van Boek-object: snel controleren of Boek-object met bepaalde id werd aangemaakt zonder hele array te overlopen
-   self::$idMap[$id] = new Cursist($id, $type, $prijs);  //indien er nog geen Boek-object met dit id bestaat, dan nieuw Boek-object aanmaken via constructor en aan lijst toevoegen
+   self::$idMap[$id] = new Cursist($id, $email, $paswoord);  //indien er nog geen Boek-object met dit id bestaat, dan nieuw Boek-object aanmaken via constructor en aan lijst toevoegen
   } 
   return self::$idMap[$id];  //indien er wel Boek-object met dit id bestaat, dan wordt het bestaande object teruggegeven
  }
@@ -27,21 +27,21 @@ class BroodType {
   return $this->id;
  }
  
- public function getType() {
-  return $this->type;
+ public function getEmail() {
+  return $this->email;
  }
  
- public function getPrijs(){
-     return $this->prijs;
+ public function getPaswoord(){
+     return $this->paswoord;
  }
  
 
- public function setType($type) {
-  $this->type = $type;
+ public function setEmail($email) {
+  $this->email = $email;
  }
  
- public function setPrijs($prijs){
-     $this->prijs=$prijs;
+ public function setPaswoord($paswoord){
+     $this->paswoord=$paswoord;
 }
  
 }

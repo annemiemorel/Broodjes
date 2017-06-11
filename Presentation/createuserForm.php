@@ -1,4 +1,6 @@
-
+<?php
+  session_start();
+  ?>
 <html>
 <head><title>Broodjes - Nieuwe gebruiker</title></head>
 <link href="../styles/main.css" rel="stylesheet" type="text/css"> 
@@ -11,7 +13,15 @@ if (isset($_GET["error"]) && $_GET["error"] == "gebruikerbestaat") {
  <p style="color: red">Gebruiker met dit emailadres bestaat al!</p>
  <?php
 }
-?>
+if (isset($_GET["error"]) && $_GET["error"] == "emailbestaatniet") {
+ ?>
+ <p style="color: red">Maak eerst nieuwe gebruiker met dit emailadres aan!</p>
+ <?php
+}
+ if(isset($_GET["pasw"]) && $_GET["pasw"] == "gemaakt"){
+            ?>
+        <font color="#ff0000">Je paswoord is <?php print($_SESSION['paswoord']);?> </font>
+            <?php }?>
         <form method="post" action="../voeggebruikertoe.php?action=process">
             <table  width="150" border="0">
             <tbody class="login">
@@ -23,9 +33,10 @@ if (isset($_GET["error"]) && $_GET["error"] == "gebruikerbestaat") {
         </form>
 <tr>
     <td><a href="../hoofdmenu.php" class="kaderknop">Terug naar Hoofdmenu</a></td>
-    
+    <td><a href="../voeggebruikertoe.php?action=nieuw" class="kaderknop">Nieuw paswoord aanvragen</a></td>
 </tr>
 <?php
+
 if (isset($_GET['error'])) {
         if ($_GET['error'] == "geennummer") { ?>
         <font color="#ff0000">U hebt geen naam ingegeven!</font>
@@ -34,6 +45,8 @@ if (isset($_GET['error'])) {
         <font color="#ff0000">Deze gast bestaat reeds!</font>
         <?php  }
        }
-     exit(0);?>
+     exit(0);
+
+ ?>
 </body>
 </html>

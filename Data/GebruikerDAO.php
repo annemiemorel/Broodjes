@@ -5,13 +5,15 @@ require_once 'Entities/Cursist.php';
 //require_once 'Entities/Login.php';
 require_once 'Exceptions/GebruikerBestaatException.php';
 require_once 'Exceptions/FoutPaswoordException.php';
+require_once 'Exceptions/EmailBestaatNietException.php';
 use Data\DBConfig;
 //use Entities\Login;
 use Entities\Cursist;
 use Exceptions\GebruikerBestaatException;
 use Exceptions\FoutPaswoordException;
+use Exceptions\EmailBestaatNietException;
 use PDO;
-//session_start();
+session_start();
 
 
 class GebruikerDAO {
@@ -31,6 +33,16 @@ class GebruikerDAO {
     return $lijst;
 }
 
+    public function maakpaswoord(){
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $paswoord = '';
+        for ($i = 0; $i < 4; $i++) {
+            $paswoord .= $characters[rand(0, strlen($characters))];
+           
+        } 
+        $_SESSION['paswoord']=$paswoord;
+        return $paswoord;
+    }
     public function create($email) {  //nieuwe functie om boek te kunnen toevoegen
         //**foutafhandeling**//
         
@@ -43,11 +55,8 @@ class GebruikerDAO {
         //echo $sql;
         $dbh = new PDO(DBConfig::$DB_CONNSTRING, DBConfig::$DB_USERNAME, DBConfig::$DB_PASSWORD);
         $stmt = $dbh->prepare($sql); 
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $paswoord = '';
-        for ($i = 0; $i < 4; $i++) {
-            $paswoord .= $characters[rand(0, strlen($characters))];
-        }
+        
+        $paswoord= sha1("Annemie".$this->maakpaswoord());
         //echo "paswoord = ".$paswoord ;
         $stmt->execute(array(':email' => $email, ':paswoord' => $paswoord));
 
@@ -58,7 +67,21 @@ class GebruikerDAO {
         return $gebruiker;
    } 
     
-   
+   public function veranderpaswoord($email){
+       $id=$this->getByEmail($email);
+       if(!$id==null){
+           $sql="update cursisten set paswoord= :paswoord where email= :email";
+           $dbh = new PDO(DBConfig::$DB_CONNSTRING, DBConfig::$DB_USERNAME, DBConfig::$DB_PASSWORD); 
+            $stmt = $dbh->prepare($sql);
+            maakpaswoord();
+            $paswoord= sha1("Annemie".$this->maakpaswoord());
+           $stmt->execute(array(':email' => $email, ':paswoord'=> $paswoord));
+           $dbh=nul;
+       }
+       else{
+           throw new EmailBestaatNietException();
+       }
+   } 
    public function delete($id) {   //nieuwe functie om boek te verwijderen
     $sql = "delete from gasten where id = :id" ; 
     $dbh = new PDO(DBConfig::$DB_CONNSTRING, DBConfig::$DB_USERNAME, DBConfig::$DB_PASSWORD);
@@ -77,6 +100,7 @@ class GebruikerDAO {
         $sql="SELECT id FROM cursisten WHERE email= :email and paswoord= :paswoord";
         $dbh = new PDO(DBConfig::$DB_CONNSTRING, DBConfig::$DB_USERNAME, DBConfig::$DB_PASSWORD); 
         $stmt = $dbh->prepare($sql);
+        $paswoord= sha1("Annemie".$paswoord);
        $stmt->execute(array(':email' => $email, ':paswoord'=> $paswoord));
        $rij = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -113,6 +137,7 @@ class GebruikerDAO {
     }  
     
     public function plaatsbestelling($email,$paswoord){
+        if(!$this->getByEmail($email)==null){
         if($this->checklogin($email,$paswoord)){
             $bestaandeGebruiker=$this->getByEmail($email);
             //echo $bestaandeGebruiker;
@@ -129,6 +154,9 @@ class GebruikerDAO {
 
             $stmt->execute(array(':datum' => $datum, ':cursist' => $bestaandeGebruiker, ':bestelling' => $bestelling, ':prijs' => $prijs));
         }}
-        return;
+        return;}
+        else{
+            throw new EmailBestaatNietException();
+        }
     }  
 }

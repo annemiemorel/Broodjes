@@ -18,6 +18,10 @@ class GebruikerService {
     $gDAO = new GebruikerDAO();
     $gDAO->create($email);
 } 
+public function veranderPaswoord($email) { //functie nodig om boek toe te voegen
+    $gDAO = new GebruikerDAO();
+    $gDAO->veranderpaswoord($email);
+} 
 public function verwijderGebruiker($id) {  //functie om boek te verwijderen
  $gDAO = new GebruikerDAO();
  $gDAO->delete($id);
