@@ -21,7 +21,8 @@ if (isset($_GET["error"]) && $_GET["error"] == "emailbestaatniet") {
  if(isset($_GET["pasw"]) && $_GET["pasw"] == "gemaakt"){
             ?>
         <font color="#ff0000">Je paswoord is <?php print($_SESSION['paswoord']);?> </font>
-            <?php }?>
+        <br> Fout:  <?php  print($_GET['errorMessage']);}
+      ?>
         <form method="post" action="../voeggebruikertoe.php?action=process">
             <table  width="150" border="0">
             <tbody class="login">
@@ -33,7 +34,7 @@ if (isset($_GET["error"]) && $_GET["error"] == "emailbestaatniet") {
         </form>
 <tr>
     <td><a href="../hoofdmenu.php" class="kaderknop">Terug naar Hoofdmenu</a></td>
-    <td><a href="../voeggebruikertoe.php?action=nieuw" class="kaderknop">Nieuw paswoord aanvragen</a></td>
+    <td><a href="../doeactie.php?action=nieuwpasw" class="kaderknop">Nieuw paswoord aanvragen</a></td>
 </tr>
 <?php
 

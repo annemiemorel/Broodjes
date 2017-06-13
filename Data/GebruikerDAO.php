@@ -2,16 +2,22 @@
 namespace Data;
 require_once 'DBConfig.php';
 require_once 'Entities/Cursist.php';
+require_once 'Entities/Bestelling.php';
 //require_once 'Entities/Login.php';
 require_once 'Exceptions/GebruikerBestaatException.php';
 require_once 'Exceptions/FoutPaswoordException.php';
 require_once 'Exceptions/EmailBestaatNietException.php';
+require_once 'Exceptions/DatumBestaatNietException.php';
+require_once 'Exceptions/FoutEmailAdresException.php';
 use Data\DBConfig;
 //use Entities\Login;
 use Entities\Cursist;
+use Entities\Bestelling;
 use Exceptions\GebruikerBestaatException;
 use Exceptions\FoutPaswoordException;
 use Exceptions\EmailBestaatNietException;
+use Exceptions\DatumBestaatNietException;
+use Exceptions\FoutEmailAdresException;
 use PDO;
 session_start();
 
@@ -68,18 +74,24 @@ class GebruikerDAO {
    } 
     
    public function veranderpaswoord($email){
-       $id=$this->getByEmail($email);
-       if(!$id==null){
+//       $id=$this->getByEmail($email);
+//       if(!$id==null){
+         if(!$this->getByEmail($email)==null){
            $sql="update cursisten set paswoord= :paswoord where email= :email";
            $dbh = new PDO(DBConfig::$DB_CONNSTRING, DBConfig::$DB_USERNAME, DBConfig::$DB_PASSWORD); 
             $stmt = $dbh->prepare($sql);
-            maakpaswoord();
+            //maakpaswoord();
             $paswoord= sha1("Annemie".$this->maakpaswoord());
            $stmt->execute(array(':email' => $email, ':paswoord'=> $paswoord));
-           $dbh=nul;
+           $dbh=null;
+//           $gebruiker = Cursist::create($gastId, $email, $paswoord);
+//        return $gebruiker;
+       
+           return;
        }
        else{
-           throw new EmailBestaatNietException();
+          throw new FoutEmailAdresException();
+           //echo "fout emailadres";
        }
    } 
    public function delete($id) {   //nieuwe functie om boek te verwijderen
@@ -124,12 +136,12 @@ class GebruikerDAO {
      $stmt = $dbh->prepare($sql);
        $stmt->execute(array(':email' => $email));
        $rij = $stmt->fetch(PDO::FETCH_ASSOC);
-
+        $dbh = null;
        if (!$rij) {  //niets gevonden
         return null;
        } else {
         $cursist = "bestaat"; //Cursist::create($rij["id"], $rij["email"], $paswoord);
-        $dbh = null;
+        
         
         return $rij["id"]; //wel boek gevonden met titel $titel
        }
@@ -154,9 +166,37 @@ class GebruikerDAO {
 
             $stmt->execute(array(':datum' => $datum, ':cursist' => $bestaandeGebruiker, ':bestelling' => $bestelling, ':prijs' => $prijs));
         }}
+         $dbh = null;
         return;}
         else{
             throw new EmailBestaatNietException();
         }
     }  
-}
+    
+    public function haalbestelling($datum){
+        $sql = "select bestelling, prijs from bestellingen where datum= :datum";
+        $dbh = new PDO(DBConfig::$DB_CONNSTRING, DBConfig::$DB_USERNAME, DBConfig::$DB_PASSWORD);
+      
+        //$lijst = array();
+        $stmt = $dbh->prepare($sql);
+       $stmt->execute(array(':datum' => $datum));
+       $resultSet = $stmt->fetchAll(PDO::FETCH_ASSOC);
+       
+       //echo print_r($resultSet);
+       //echo "totaal = ".count($resultSet);
+        $dbh = null;
+        
+       if (!$resultSet) {  //niets gevonden
+        throw new DatumBestaatNietException();
+       } else {
+//        $lijst = array();
+//       foreach ($resultSet as $rij) {
+//            $message = new Bestelling($rij["id"], $rij["datum"],$rij["cursist"], $rij["bestelling"],$rij["prijs"]);
+//            echo $rij["bestelling"]." * " . $rij["prijs"];
+//            array_push($lijst, $message);
+//        } 
+//        print_r($lijst);
+        return $resultSet;
+        }
+}}
+        

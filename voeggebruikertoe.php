@@ -3,9 +3,11 @@
 require_once 'Business/GebruikerService.php';
 require_once 'Exceptions/GebruikerBestaatException.php';
 require_once 'Exceptions/EmailBestaatNietException.php';
+require_once 'Exceptions/FoutEmailAdresException.php';
 use Business\GebruikerService;
 use Exceptions\GebruikerBestaatException;
 use Exceptions\EmailBestaatNietException;
+use Exceptions\FoutEmailAdresException;
 //require_once('bootstrap.php');
 
 
@@ -32,11 +34,11 @@ if (isset($_GET["action"]) && $_GET["action"] == "nieuw") {
        
         $gSvc = new GebruikerService();
         $gSvc->veranderPaswoord($_POST['email']);
-        header("location: doeactie.php?action=stuurmail"); //hoofdmenu.php");  //
+        header("location: Presentation/nieuwpaswoordForm.php?pasw=nieuw"); //hoofdmenu.php");  //
         exit(0);
     } 
-    catch (EmailBestaatNietException $ex) {
-        header("location: Presentation/createuserForm.php?error=emailbestaatniet");
+    catch (FoutEmailAdresException $ex) {
+        header("location: Presentation/nieuwpaswoordForm.php?error=emailbestaatniet");
         exit(0);
     }
     

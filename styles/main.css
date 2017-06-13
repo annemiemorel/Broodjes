@@ -178,6 +178,23 @@ tbody tr td{
     text-align: center;
     
 }
+tbody.overzicht tr td {
+    height: 20px;
+   width: fit-content;
+    background-color: #D4C499;
+	color: black;
+	font-size: 16px;
+         border:1px black solid;
+         padding: 2px;
+}
+tbody.overzicht tr td:last-child{
+    height:35px;
+    font-size: 20px;
+    color: #B60000;
+}
+tbody.overzicht tr:last-child{
+    background-color: #d0e585;
+}
 tbody.login tr th, tbody.resultaten tr th{
     width:18em;
     height:3em;

@@ -11,7 +11,7 @@ class Bestelling {
  private $bestelling;
  private $prijs;
 
- private function __construct($id, $datum, $prijs) {
+ public function __construct($id, $datum, $cursist,$bestelling, $prijs) {
  $this->id = $id;
  $this->datum = $datum;
  $this->cursist= $cursist;
@@ -20,9 +20,10 @@ class Bestelling {
  
 }
 
- public static function create($id, $datum, $prijs){
+
+ public static function create($id, $datum, $cursist,$bestelling, $prijs){
      if (!isset(self::$idMap[$id])) {  //geindexeerd met id van Boek-object: snel controleren of Boek-object met bepaalde id werd aangemaakt zonder hele array te overlopen
-   self::$idMap[$id] = new Cursist($id, $datum, $prijs);  //indien er nog geen Boek-object met dit id bestaat, dan nieuw Boek-object aanmaken via constructor en aan lijst toevoegen
+   self::$idMap[$id] = new Bestelling($id, $datum, $cursist,$bestelling,$prijs);  //indien er nog geen Boek-object met dit id bestaat, dan nieuw Boek-object aanmaken via constructor en aan lijst toevoegen
   } 
   return self::$idMap[$id];  //indien er wel Boek-object met dit id bestaat, dan wordt het bestaande object teruggegeven
  }
